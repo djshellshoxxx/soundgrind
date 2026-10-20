@@ -28,6 +28,9 @@ preview = json.loads((preview_dir / "campaign.json").read_text())
 assert preview["planned_cases"] == 15
 assert preview["preview"]["unique_states"] == 3
 assert preview["preview"]["rounds_per_state"] == 5
+too_many = run("test", "--target", target, "--worker", worker, "--out", outdir / "over-budget",
+               "--profile", "level3", "--states", "3", "--rounds", "2", "--max-cases", "5", ok=False)
+assert "planned cases exceed --max-cases" in too_many.stderr
 
 campaign_dir = outdir / "fuzz1"
 run("test", "--target", target, "--worker", worker, "--out", campaign_dir,
@@ -37,6 +40,13 @@ campaign = json.loads((campaign_dir / "campaign.json").read_text())
 assert campaign["planned_cases"] == campaign["completed_cases"] == 6
 assert len(campaign["cases"]) == 6
 assert all(len(c["parameter_snapshot"]) == 3 for c in campaign["cases"])
+domains = {p["id"]: p for p in ins["parameters"]}
+for case in campaign["cases"]:
+    for param_id, value in case["parameter_snapshot"].items():
+        domain = domains[param_id]
+        assert domain["min"] <= value <= domain["max"]
+        if domain["stepped"]:
+            assert value.is_integer()
 assert all(c["processed_samples"] >= 48 for c in campaign["cases"])
 assert all({m["module_id"] for m in c["module_results"]} == {"fixture.oracle", "params.readback"}
            for c in campaign["cases"])
@@ -44,6 +54,14 @@ assert campaign["cases"][0]["parameter_snapshot"] == campaign["cases"][1]["param
 assert campaign["cases"][0]["state_index"] == campaign["cases"][1]["state_index"]
 assert campaign["cases"][0]["round_index"] != campaign["cases"][1]["round_index"]
 assert campaign["cases"][0]["actual_dwell_ms"] >= 1.0
+
+repeat_dir = outdir / "fuzz1-repeat"
+run("test", "--target", target, "--worker", worker, "--out", repeat_dir,
+    "--profile", "fuzz1", "--states", "3", "--rounds", "2", "--dwell-ms", "1",
+    "--seed", "800813", "--max-cases", "6", "--modules", "fixture.oracle,params.readback")
+repeat = json.loads((repeat_dir / "campaign.json").read_text())
+assert [x["parameter_snapshot"] for x in campaign["cases"]] == [
+    x["parameter_snapshot"] for x in repeat["cases"]]
 
 source = sorted((campaign_dir / "cases").glob("*.json"))[-1]
 source_before = source.read_bytes()
@@ -67,4 +85,4 @@ with tampered.open("ab") as f:
 mismatch = run("replay", "--target", tampered, "--worker", worker, "--case", source,
                "--out", outdir / "mismatch", ok=False)
 assert "SHA-256 mismatch" in mismatch.stderr
-print("CLI inspect, preview, case coverage, dwell rounding, replay, hash guard and HTML report passed")
+print("CLI inspect, preview/budget, deterministic snapshots, domain checks, dwell, replay/hash guard and HTML report passed")

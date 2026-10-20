@@ -92,3 +92,16 @@ Checked: 2026-10-19. Primary sources are favored; versions, licensing and capabi
 For each candidate document: source URL + commit/tag; dependency graph and license; tested OS/arch; performance and stability; native API vs CLI; required modifications; feature overlap; integration maintenance cost; upstream churn; concrete prototype test; verdict **adopt / invoke / study only / reject**; supporting evidence.
 
 Every new design subsystem spec must update this file with relevant research findings, without deleting older conclusions silently.
+
+## M1 implementation research addendum — 2026-10-20
+
+The initial CLAP-first decision was rechecked against current upstream metadata before pinning dependencies. Exact versions, Git commit hashes, license records and reuse decisions are in [DEPENDENCIES.md](DEPENDENCIES.md).
+
+- `free-audio/clap` 1.2.9 is MIT-licensed. SoundGrind fetches the exact upstream commit and uses its official headers for lifecycle, audio ports, parameter events and state streams.
+- `nlohmann/json` 3.12.0 is MIT-licensed and pinned to the release commit. No newer version was needed for the M1 feature set.
+- `free-audio/clap-validator` 0.4.1 is MIT-licensed. It remains an optional external validator rather than a linked dependency; M1's synthetic fixture validates the SoundGrind worker and report contract.
+- `Tracktion/pluginval` is GPL-3.0. It is studied for test-depth/headless behavior only; no source or linked code is included.
+- `dfl/clap-trap` is MIT-licensed and is a current headless CLAP-host precedent. It is studied, not copied or invoked.
+- `iPlug3/audio-plugin-dev-skills` is MIT-licensed. Its selectable, reusable LLM workflow is reflected in the module-selection example; no source is copied.
+
+The implementation uses seeded valid-domain sampling, full case snapshots, explicit step/enum traversal, a flushed pre-worker case record, finite-output checks, a fixture-specific deterministic oracle, block-size probes, and subprocess crash/hang containment. It does not claim coverage-guided or native code coverage. Process supervision provides crash containment, not malicious-code isolation. See `docs/M1_VERIFICATION.md` for actual test results and remaining gates.

@@ -2,7 +2,7 @@
 
 SoundGrind is a C++20 command-line test engine for exercising CLAP audio plugins during development. Its first implementation milestone (M1) provides reusable test modules, offline rendering, supervised workers, reproducible parameter snapshots, replay, JSON evidence and a self-contained HTML report.
 
-**Status:** M1 implementation is in progress. Linux build and fixture tests pass. Windows x64 CI is the required verification gate; check the workflow badge/run before treating M1 as verified.
+**Status:** M1 verified for its documented CLAP CLI scope on Windows x64 and Linux. The Windows x64 build and all seven CI tests passed on 2026-10-20; details are in [the verification record](docs/M1_VERIFICATION.md).
 
 M1 supports CLAP plugins only. It does not open audio devices, run GUI or text-input tests, host VST3, or sandbox untrusted binaries. A worker process contains ordinary target crashes and hangs; it is not a security boundary.
 

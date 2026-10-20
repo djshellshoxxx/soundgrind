@@ -1,6 +1,6 @@
 # M1: Reusable tiered CLAP testing
 
-**Status:** Implementing. **Revision:** 1.0. **Scope:** Windows x64 acceptance target; Linux is used for local development checks. The current implementation supports native CLAP binaries and the in-repository synthetic fixture.
+**Status:** Verified 2026-10-20. **Revision:** 1.0. **Scope:** Windows x64 acceptance target; Linux is used for local development checks. The current implementation supports native CLAP binaries and the in-repository synthetic fixture.
 
 ## User contract
 
@@ -60,4 +60,4 @@ Process isolation only contains ordinary target crashes and hangs. M1 does not c
 
 ## Verification status
 
-See `docs/M1_VERIFICATION.md`. Do not mark M1 verified until the Windows x64 CI workflow and acceptance suite pass.
+The Windows x64 CI build and acceptance suite passed. See `docs/M1_VERIFICATION.md` for the run reference and remaining platform limitations.

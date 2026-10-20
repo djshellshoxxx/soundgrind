@@ -1,10 +1,10 @@
 # SoundGrind subsystem specification register
 
-Updated 2026-10-20. **Draft** means initial prose exists, not an approved implementation contract. M1 code is under implementation and is not verified until its Windows x64 CI gate passes.
+Updated 2026-10-20. **Draft** means initial prose exists, not an approved implementation contract. M1 is verified for the documented CLAP CLI scope; future subsystem specs remain drafts or planned.
 
 | Order | Spec file | Scope | Status | Dependency |
 | --- | --- | --- | --- | --- |
-| 00 | M1_REUSABLE_CLAP_TESTING.md | First reusable CLAP CLI, offline worker, tiered modules, replay and reports | Implementing; Linux tests pass; Windows verification pending | C++20, CLAP, worker protocol |
+| 00 | M1_REUSABLE_CLAP_TESTING.md | First reusable CLAP CLI, offline worker, tiered modules, replay and reports | Verified on Windows x64 and Linux | C++20, CLAP, worker protocol |
 | 01 | ULTIMATE_FUZZ_STRESS.md | Flagship complete-state randomization, 1-second dwell, text mutation, loops, replay | Draft written | Shared schemas, scheduler, worker and host contract |
 | 02 | TARGET_DISCOVERY.md | Plugin/app scan, identities, parameter inventory, capability and input maps | Planned | None |
 | 03 | HOST_ADAPTERS.md | Format-aware VST3 and CLAP host workers, lifecycle and callback/thread legality | Planned | Discovery, process protocol |
@@ -57,4 +57,4 @@ Root docs:
 - docs/RESEARCH_NOTES.md — sources, differentiators, license caveats
 - specs/ULTIMATE_FUZZ_STRESS.md — flagship initial technical draft
 
-Current active task: complete the Windows x64 CI gate for M1 and record exact results in `docs/M1_VERIFICATION.md`. M1 is not verified while that gate is pending.
+Current status: M1 Windows x64 CI and fixture acceptance tests passed. The next subsystem remains outside this M1 implementation scope.

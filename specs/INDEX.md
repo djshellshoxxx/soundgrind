@@ -1,9 +1,10 @@
 # SoundGrind subsystem specification register
 
-Updated 2026-10-19. **Draft** means initial prose exists, not an approved implementation contract. No SoundGrind application functionality is currently implemented.
+Updated 2026-10-20. **Draft** means initial prose exists, not an approved implementation contract. M1 is verified for the documented CLAP CLI scope; future subsystem specs remain drafts or planned.
 
 | Order | Spec file | Scope | Status | Dependency |
 | --- | --- | --- | --- | --- |
+| 00 | M1_REUSABLE_CLAP_TESTING.md | First reusable CLAP CLI, offline worker, tiered modules, replay and reports | Verified on Windows x64 and Linux | C++20, CLAP, worker protocol |
 | 01 | ULTIMATE_FUZZ_STRESS.md | Flagship complete-state randomization, 1-second dwell, text mutation, loops, replay | Draft written | Shared schemas, scheduler, worker and host contract |
 | 02 | TARGET_DISCOVERY.md | Plugin/app scan, identities, parameter inventory, capability and input maps | Planned | None |
 | 03 | HOST_ADAPTERS.md | Format-aware VST3 and CLAP host workers, lifecycle and callback/thread legality | Planned | Discovery, process protocol |
@@ -48,7 +49,7 @@ Start with a small working test path, retain success after each milestone, and a
 
 ## Handoff
 
-Design branch: docs/soundgrind-master-design
+Design baseline: main, commit `e661ef0` (2026-10-19). M1 implementation branch: `feat/m1-clap-test-engine`.
 Root docs:
 - README.md — project status and entry points
 - prompts/MASTER_DESIGN_PROMPT.md — authoritative reusable research/design metaprompt
@@ -56,4 +57,4 @@ Root docs:
 - docs/RESEARCH_NOTES.md — sources, differentiators, license caveats
 - specs/ULTIMATE_FUZZ_STRESS.md — flagship initial technical draft
 
-Next active task: Run the master prompt as a design-only exercise, validate source claims/licenses, settle the stack tradeoffs, write the top-level architecture/data contracts/test matrix, then promote individual subsystem specs to reviewed status before code.
+Current status: M1 Windows x64 CI and fixture acceptance tests passed. The next subsystem remains outside this M1 implementation scope.

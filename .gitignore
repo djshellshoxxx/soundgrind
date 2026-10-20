@@ -1,0 +1,5 @@
+/build/
+/soundgrind-results/
+*.tmp
+core
+core.*

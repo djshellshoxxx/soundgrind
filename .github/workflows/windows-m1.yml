@@ -1,0 +1,40 @@
+name: Windows x64 M1
+
+on:
+  push:
+    branches: [main, "feat/**"]
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  build-test:
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Configure Visual Studio x64 build
+        run: cmake -S . -B build -A x64 -DCMAKE_BUILD_TYPE=Release
+      - name: Build CLI, worker and synthetic CLAP fixture
+        run: cmake --build build --config Release --parallel
+      - name: Run engine and supervised fixture tests
+        run: ctest --test-dir build -C Release --output-on-failure --timeout 120
+      - name: Upload test logs and case evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: soundgrind-m1-windows-x64-results
+          if-no-files-found: warn
+          path: |
+            build/Testing/Temporary/LastTest.log
+            build/fixture-*/campaign.json
+            build/fixture-*/cases/*.json
+            build/fixture-*/worker/*.log
+            build/integration-checks/campaign.json
+            build/integration-checks/report.html
+            build/integration-checks/replay/campaign.json
+            build/integration-checks/manual-report.html

@@ -9,3 +9,7 @@ Start with [the master design prompt](prompts/MASTER_DESIGN_PROMPT.md) and [the 
 The flagship feature is Ultimate Fuzz Stress: deterministic, reproducible, iterative randomization of every supported controllable parameter with an editable dwell time (default 1 second), evidence capture, and automatic failure triage. It is a stochastic search, not exhaustive enumeration.
 
 This repository is a design workspace. Subsequent subsystem specifications, architecture decision records, and implementation branches will be added after validating the design.
+
+## Wiki
+
+Wiki source pages are in [docs/wiki/](docs/wiki/Home.md): a map of the design documents and the planned subsystems. Status is design only.
